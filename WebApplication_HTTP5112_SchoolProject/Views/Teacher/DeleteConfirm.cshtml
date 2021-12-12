@@ -1,0 +1,14 @@
+﻿
+@{
+    ViewBag.Title = "DeleteConfirm";
+}
+
+
+<a href="/Teacher/List">Back to List</a>
+<h2>Are you sure  you want to delete @Model.TeacherId</h2>
+<form action="/Teacher/Delete/@Model.TeacherId" method="POST">
+    <input type="submit" value="Delete Teacher" />
+</form>
+
+
+
