@@ -186,7 +186,7 @@ namespace WebApplication_HTTP5112_SchoolProject.Controllers
                     cmd.ExecuteNonQuery();
                 }
 
-                // Unable to return the last inserted ID
+                // Not sure how to return the  inserted ID
 
                 Debug.WriteLine(" check ------------------------ id " + NewTeacher.TeacherId);
             } 
@@ -194,6 +194,60 @@ namespace WebApplication_HTTP5112_SchoolProject.Controllers
             Conn.Close();
         }
 
+
+        /// <summary>
+        /// Updates an article from a given Id
+        /// </summary>
+        /// <param name="SelectedTeacher">Teacher information including first name and lat name, emp number, hiredate and salary</param>
+        /// <returns>Void</returns>
+        [HttpPost]
+        [Route("api/TeacherData/UpdateTeacher/{id}")]
+        [EnableCors(origins: "*", methods: "*", headers: "*")]
+        public void UpdateTeacher([FromBody] Teacher SelectedTeacher)
+        {
+            MySqlConnection Conn = School.AccessDatabase();
+            //Open the connection between the web server and database
+            Conn.Open();
+
+            if (ModelState.IsValid)
+            {
+                Debug.WriteLine("Teacher first name: " + SelectedTeacher.Teacherfname + " Sal  " + SelectedTeacher.Salary + "Hdate " + SelectedTeacher.HireDate);
+
+                //SQL UPDATE QUERY
+                string query = "update teachers set TeacherfName=@fname, TeacherlName=@lname, Employeenumber=@empNo, HireDate=@hireDate, Salary=@salary where TeacherId=@id ";
+
+                //Establish a new command (query) for our database
+                MySqlCommand cmd = Conn.CreateCommand();
+                cmd.CommandText = query;
+                if (!(string.IsNullOrEmpty(SelectedTeacher.Teacherfname)) && !(string.IsNullOrEmpty(SelectedTeacher.Teacherlname)))
+                {
+
+                    // validate when empty date received. Use current date
+                    if (string.IsNullOrEmpty(SelectedTeacher.HireDate))
+                    {
+                        SelectedTeacher.HireDate = DateTime.Now.ToString("yyyy-M-d H:m:ss");
+                    }
+
+                    // validate for empty salary and add  zero if empty
+                    if (string.IsNullOrEmpty(SelectedTeacher.Salary))
+                    {
+                        SelectedTeacher.Salary = "0";
+                    }
+
+
+                    cmd.Parameters.AddWithValue("@fname", SelectedTeacher.Teacherfname);
+                    cmd.Parameters.AddWithValue("@lname", SelectedTeacher.Teacherlname);
+                    cmd.Parameters.AddWithValue("@empNo", SelectedTeacher.Employeenumber);
+                    cmd.Parameters.AddWithValue("@hireDate", Convert.ToDateTime(SelectedTeacher.HireDate));
+                    cmd.Parameters.AddWithValue("@salary", Decimal.Parse(SelectedTeacher.Salary));
+                    cmd.Parameters.AddWithValue("@id", SelectedTeacher.TeacherId);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+
+            Conn.Close();
+        }
 
 
         /// <summary>

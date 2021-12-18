@@ -34,6 +34,41 @@ namespace WebApplication_HTTP5112_SchoolProject.Controllers
             return View(SelectedTeacher);
         }
 
+        // Update request is used to render Teacher data from given Id
+        [HttpGet]
+        [Route("Teacher/Update/{id}")]
+        public ActionResult Update(int id)
+        {
+            TeacherDataController Controller = new TeacherDataController();
+            Teacher SelectedTeacher = Controller.FindTeacher(id);
+            return View(SelectedTeacher);
+        }
+
+        // this request is used to update the date of the given id in the table
+        [HttpPost]
+        [Route("Teacher/Update/{id}")]
+
+        public ActionResult Update(int id, string TeacherfName, string TeacherlName, string EmpNo, string Salary, string HireDate)
+        {
+            Debug.WriteLine("Name : " + TeacherfName + " "+ TeacherlName);
+            Debug.WriteLine("Emp No: " + EmpNo);
+
+            TeacherDataController Controller = new TeacherDataController();
+            Teacher SelectedTeacher = new Teacher();
+            SelectedTeacher.TeacherId = id;
+            SelectedTeacher.Teacherfname = TeacherfName;
+            SelectedTeacher.Teacherlname = TeacherlName;
+            SelectedTeacher.Employeenumber = EmpNo;
+            SelectedTeacher.Salary = Salary;
+            SelectedTeacher.HireDate = HireDate;
+
+            Controller.UpdateTeacher(SelectedTeacher);
+
+            return RedirectToAction("Show/" + id);
+        }
+
+
+
         //GET: Teacher/New
         [HttpGet]
         [Route("Teacher/New")]

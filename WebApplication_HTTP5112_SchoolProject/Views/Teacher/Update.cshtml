@@ -1,0 +1,39 @@
+﻿
+@Model IEnumerable<WebApplication_HTTP5112_SchoolProject.Models.Teacher>
+    @{
+        ViewBag.Title = "Update";
+    }
+
+
+
+    <a href="/Teacher/List">Back to List</a>
+    <a href="/Teacher/DeleteConfirmTeacher/@Model.TeacherId">Delete Teacher</a>
+
+    <h1>Update a Teacher</h1>
+    <form method="POST" action="/Teacher/Update/@Model.TeacherId">
+        <div>
+            <div><label>First Name:</label></div>
+            <div><input type="text" name="TeacherfName" value="@Model.Teacherfname" /></div>
+        </div>
+        <div>
+            <div><label>Last Name: </label></div>
+            <div><input type="text"  name="TeacherlName" value="@Model.Teacherlname" /></div>
+        </div>
+        <div>
+            <div><label>Employee Number: </label></div>
+            <div><input type="text"  name="EmpNo" value="@Model.Employeenumber" /></div>
+
+        </div>
+        <div>
+            <div><label>Joining Date: </label></div>
+            <div><input type="text"  name="HireDate" value="@Model.HireDate" /></div>
+        </div>
+        <div>
+            <div><label>Salary: </label></div>
+            <div><input type="text"  name="Salary" value="@Model.Salary" /></div>
+        </div>
+        <div>
+            <input type="submit" value="Update Teacher"/>
+        </div>
+    </form>
+
